@@ -12,16 +12,53 @@ const mainController = {
       .catch((error) => console.log(error));
   },
   bookDetail: (req, res) => {
-    // Implement look for details in the database
-    res.render('bookDetail');
+    // Obtener el ID del libro desde los PARÁMETROS de la ruta
+    const bookId = req.params.id;
+
+    // Buscar el libro en la BASE DE DATOS por su ID
+    db.Book.findByPk(bookId, {
+      include: [{ association: 'authors' }]
+    })
+      .then((book) => {
+        if (!book) {
+          // Si NO se encuentra el libro
+          return res.status(404).render('error', { message: 'Libro no encontrado' });
+        }
+
+        // Renderiza la vista 'bookDetail' y pasa los datos del libro
+        res.render('bookDetail', { book });
+      })
+      .catch((error) => {
+        console.log(error);
+        // Errores
+        res.status(500).render('error', { message: 'Error interno del servidor' });
+      });
   },
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
   bookSearchResult: (req, res) => {
-    // Implement search by title
-    res.render('search');
+    // Obtener el título de libro ingresado por el usuario desde el cuerpo de la solicitud
+    const { title } = req.body;
+  
+    // Realizar la búsqueda en la BASE DE DATOS
+    db.Book.findAll({
+      where: {
+        title: {
+          [db.Sequelize.Op.iLike]: `%${title}%` // Búsqueda case-insensitive por título similar
+        }
+      }
+    })
+      .then((books) => {
+        res.render('searchResults', { books });
+      })
+      .catch((error) => {
+        console.log(error);
+        // Errores
+        res.status(500).render('error', { message: 'Error interno del servidor' });
+      });
   },
+  
   deleteBook: (req, res) => {
     // Implement delete book
     res.render('home');
