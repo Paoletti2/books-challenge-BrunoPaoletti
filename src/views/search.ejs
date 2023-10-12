@@ -24,6 +24,15 @@
 
 
     <div class="list-group">
+      <% if (books.length === 0) { %>
+      <% } else { %>
+        <% books.forEach(function(book) { %>
+          <div class="list-group-item">
+            <h2><%= book.title %></h2>
+            <p><%= book.description %></p>
+          </div>
+        <% }); %>
+      <% } %>
       
     </div>
   </div>
