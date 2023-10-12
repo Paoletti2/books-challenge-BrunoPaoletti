@@ -12,6 +12,8 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
+
+
   bookDetail: (req, res) => {
     // Obtener el ID del libro desde los PARÁMETROS de la ruta
     const bookId = req.params.id;
@@ -35,9 +37,13 @@ const mainController = {
         res.status(500).render('error', { message: 'Error interno del servidor' });
       });
   },
+
+
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
+
+
   bookSearchResult: async (req, res) => {
     await db.Book.findAll(
       { where: { title: { [Op.like]: "%" + req.body.title + "%" } } })
@@ -46,10 +52,13 @@ const mainController = {
       })
   },
   
+
   deleteBook: (req, res) => {
     // Implement delete book
     res.render('home');
   },
+
+
   authors: (req, res) => {
     db.Author.findAll()
       .then((authors) => {
@@ -57,13 +66,34 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
-  authorBooks: (req, res) => {
-    // Implement books by author
-    res.render('authorBooks');
+
+
+  authorBooks: async (req, res) => {
+    const authorId = req.params.id;
+    console.log(authorId)
+
+  // Buscar al autor por su ID en la base de datos y cargar sus libros relacionados
+  db.Author.findByPk(authorId, {
+    include: [{ association: 'books' }]
+  })
+    .then((author) => {
+      if (!author) {
+        return res.status(404).render('error', { message: 'Autor no encontrado' });
+      }
+      // Renderizar la vista 'authorBooks' y pasar los datos del autor y sus libros
+      res.render('authorBooks', { author });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   },
+
+
   register: (req, res) => {
     res.render('register');
   },
+
+
   processRegister: (req, res) => {
     db.User.create({
       Name: req.body.name,
@@ -77,18 +107,26 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
+
+
   login: (req, res) => {
     // Implement login process
     res.render('login');
   },
+
+
   processLogin: (req, res) => {
     // Implement login process
     res.render('home');
   },
+
+
   edit: (req, res) => {
     // Implement edit book
     res.render('editBook', {id: req.params.id})
   },
+
+
   processEdit: (req, res) => {
     // Implement edit book
     res.render('home');

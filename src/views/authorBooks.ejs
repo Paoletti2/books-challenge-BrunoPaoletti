@@ -15,27 +15,18 @@
       <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
       
         <div class="feature col">
-          <div class="feature-icon bg-gradient">
-            <img class="d-block mx-auto mb-4" src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Catcher-in-the-rye-red-cover.jpg" alt="" width="172" height="257">
-          </div>
-          <h2>Book Title</h2>
-          <p>Book description.</p>
-          <a href="#" class="icon-link">
-            Detail
-          </a>
+  
+          <% author.books.forEach(function(book) { %>
+            <div class="card">
+              <div class="card-body">
+                <img class="d-block mx-auto mb-4" src="<%= book.cover %>" alt="<%= book.title %>" width="172" height="257">
+                <h5 class="card-title"><%= book.title %></h5>
+                <p class="card-text"><%= book.description %></p>
+              </div>
+            </div>
+          <% }); %>
+           
         </div>
-
-        <div class="feature col">
-          <div class="feature-icon bg-gradient">
-            <img class="d-block mx-auto mb-4" src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Catcher-in-the-rye-red-cover.jpg" alt="" width="172" height="257">
-          </div>
-          <h2>Book Title</h2>
-          <p>Book description.</p>
-          <a href="#" class="icon-link">
-            Detail
-          </a>
-        </div>
-
 
   </div>
   </div>
