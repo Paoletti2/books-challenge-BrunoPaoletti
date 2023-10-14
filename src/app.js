@@ -1,7 +1,23 @@
 const express = require('express');
 const mainRouter = require('./routes/main');
+const session = require('express-session');
+const cookie = require('cookie-parser');
+const cookieExist = require('./middlewares/cookieMiddleware');
+const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware')
 
 const app = express();
+
+app.use(cookie())
+
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}))
+
+app.use(userLoggedMiddleware)
+
+app.use(cookieExist);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
