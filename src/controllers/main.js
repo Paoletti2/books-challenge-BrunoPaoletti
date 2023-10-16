@@ -2,6 +2,7 @@ const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
 const { Op, Model } = require("sequelize");
 const { use } = require('../routes/main');
+const { validationResult } = require('express-validator');
 
 
 const mainController = {
@@ -25,13 +26,12 @@ const mainController = {
 
       .then((book) => {
         if (!book) {
-          return res.status(404).render('error', { message: 'Libro no encontrado' });
+          return res.send('404')
         }
         res.render('bookDetail', { book });
       })
       .catch((error) => {
         console.log(error);
-        res.status(500).render('error', { message: 'Error interno del servidor' });
       });
   },
 
@@ -51,9 +51,8 @@ const mainController = {
   
 
   deleteBook: async (req, res) => {
-    await db.Book.update({
-      state: true,
-  }, {
+    await db.Book.destroy(
+      {
       where: {
           id: req.params.id,
       }
@@ -80,7 +79,7 @@ const mainController = {
     })
     .then((author) => {
       if (!author) {
-        return res.status(404).render('error', { message: 'Autor no encontrado' });
+        return res.send('404')
       }
       res.render('authorBooks', { author });
     })
@@ -96,6 +95,10 @@ const mainController = {
 
 
   processRegister: (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.render('register', { errors: errors.mapped() })
+    }
     db.User.create({
       Name: req.body.name,
       Email: req.body.email,
@@ -116,6 +119,10 @@ const mainController = {
 
 
   processLogin: async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.render('login', { errors: errors.mapped() })
+    }
     try {
       const user = await db.User.findOne(
         { where: { email:req.body.email } })
@@ -154,13 +161,12 @@ const mainController = {
       
       .then((book) => {
         if (!book) {
-          return res.status(404).render('error', { message: 'Libro no encontrado' });
+          return res.send('404')
         }
         res.render('editBook', { book: book });
       })
       .catch((error) => {
         console.log(error);
-        res.status(500).render('error', { message: 'Error interno del servidor' });
       });
   },
 

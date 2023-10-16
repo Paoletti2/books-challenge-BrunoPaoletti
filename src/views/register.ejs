@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css" />
   <title>Books Repository</title>
 
   
@@ -30,7 +31,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="name" class="form-control form-control-lg" />
+                  <input id="name" type="text" name="name" class="form-control form-control-lg" />
   
                 </div>
               </div>
@@ -45,7 +46,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" />
+                  <input id="email" type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" />
   
                 </div>
               </div>
@@ -60,7 +61,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="country" class="form-control form-control-lg" placeholder="Argentina" />
+                  <input id="country" type="text" name="country" class="form-control form-control-lg" placeholder="Argentina" />
   
                 </div>
               </div>
@@ -75,7 +76,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="password" name="password" class="form-control form-control-lg" >
+                  <input id="password" type="password" name="password" class="form-control form-control-lg" >
   
                 </div>
               </div>
@@ -106,12 +107,21 @@
   
             </div>
           </form>
-  
+
+          <% if (locals.errors) { %>
+            <% for( error in errors ) { %>
+               <p style="background-color: red; color: white; font-weight: 900;"> <%= errors[error].msg %> </p> 
+            <% } %>
+           <% } %>
+
+           <ul class="erroresLista">  </ul>
+
         </div>
       </div>
     </div>
   </section>
 </div>
 <%- include('partials/footer.ejs') %>
+<script src="/js/register.js">  </script>
 </body>
 </html>

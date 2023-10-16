@@ -3,6 +3,7 @@ const mainController = require('../controllers/main');
 const loginValidation = require('../middlewares/loginValidation');
 const adMiddleware = require('../middlewares/adMiddleware');
 const logMiddleware = require('../middlewares/logMiddleware');
+const registerValidation = require('../middlewares/registerValidation');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.get('/authors/:id/books', mainController.authorBooks);
 
 // REGISTRAR USUARIOS
 router.get('/users/register', mainController.register);
-router.post('/users/register', mainController.processRegister);
+router.post('/users/register', registerValidation, mainController.processRegister);
 
 // INICIAR SESION USUARIOS
 router.get('/users/login', mainController.login);

@@ -4,6 +4,7 @@ const session = require('express-session');
 const cookie = require('cookie-parser');
 const cookieExist = require('./middlewares/cookieMiddleware');
 const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware')
+const path = require('path')
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+
+app.use(express.static(path.resolve(__dirname, "./../public")));
 
 app.use(userLoggedMiddleware)
 

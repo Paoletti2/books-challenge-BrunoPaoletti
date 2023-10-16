@@ -1,0 +1,13 @@
+
+
+.erroresLista {
+    color: white;
+    list-style: none;
+    text-align: start;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.erroresLista li {
+    background-color: red;
+}
